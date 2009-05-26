@@ -25,8 +25,14 @@ We = {
     }).send()
   },
   
-  view: function(doc, next, tag) {
-    var node = new Element(tag || 'span')
+  view: function(doc, next, options) {
+    // use $merge?
+    var options = options || {}
+    if (!options.enclosing)
+      options.enclosing = doc
+      
+    var enclosing = options.enclosing
+    var node = new Element(options.tag || 'span')
 
     var $we = function(id, oNode) {
       return (oNode || node).getElement('[weid=' + id + ']')
@@ -37,7 +43,7 @@ We = {
     }
 
     var $save = function() {
-      We.save(doc)
+      We.save(options.enclosing)
     }
 
     this.register(doc, node)
@@ -59,7 +65,7 @@ We = {
         value = doc[element.get('wedockey')]
         We.view(value, function(subNode) {
           subNode.replaces(element)
-        }, element.get('tag'))
+        }, {tag: element.get('tag'), enclosing: enclosing})
       })
 
       We.getURL(docViewUrl + '.js', function(js) {
@@ -75,7 +81,7 @@ We = {
     
     this.view(doc, function(newNode) {
       entry.node = newNode.replaces(entry.node)
-    }, entry.node.get('tag'))
+    }, {tag: entry.node.get('tag')})
   },
   
   active: {},

@@ -1,5 +1,6 @@
-$each(doc, function(value, property) {
+$each($H(doc).getKeys().sort(), function(property) {
   if (property[0] != '_') {
+    var value = doc[property]
     var liItem = new Element('li').inject($we('list'))
 
     $we('remove').clone().setStyle('display', 'inline').inject(liItem)
@@ -14,7 +15,7 @@ $each(doc, function(value, property) {
     if (type == 'object' || type == 'array') {
       We.view(value, function(newLiItem) {
         newLiItem.inject(liItem)
-      })
+      }, {enclosing: enclosing})
     }
     else {
       $we('prototype').clone().setStyle('display', 'inline').inject(liItem)
@@ -39,8 +40,15 @@ $each(doc, function(value, property) {
   }
 })
 
+// we store these beforehand because once this code is done executing
+// all the elements of this document will start loading and some of them
+// also have an element with weid=type and property, so it would find
+// the wrong one
+var typeNode = $we('type')
+var propertyNode = $we('property')
+
 $we('add').addEvent('click', function() {
-  var type = $we('type').get('value');
+  var type = typeNode.get('value');
   var value;
   
   if (type == 'string')
@@ -50,6 +58,6 @@ $we('add').addEvent('click', function() {
   else if (type == 'array')
     value = []
     
-  doc[$we('property').get('value')] = value;
+  doc[propertyNode.get('value')] = value;
   $save()
 })
