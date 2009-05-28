@@ -4,7 +4,14 @@ $each(doc.value, function(value, index) {
   $we('remove').clone().setStyle('display', 'inline').inject(liItem)
   $we('remove', liItem).addEvent('click', function() {
     $save(function(doc) {
-      doc.value.splice(index, 1)
+      // $fix - bad variables val value
+      doc.value = doc.value.filter(function(val) {
+        console.log('<')
+        console.log(val)
+        console.log(value)
+        console.log('>')
+        return (val["_link"] != value["_object-id"])
+      })
     })
   })
 

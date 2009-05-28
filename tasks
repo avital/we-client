@@ -1,0 +1,16 @@
+
+
+$fix0: implement chatroom
+
+javascript includes (like tasks)
+
+$fix3: proper unit testing fw
+$fix3: figure out caching stuff
+
+CSS
+VIEW CACHING
+
+how to document options (like in We.view) - $ functions
+what can views access from we?
+rhino
+check for infinite loops!!!
